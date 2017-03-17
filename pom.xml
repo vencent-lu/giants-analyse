@@ -4,7 +4,7 @@
   
   <groupId>com.github.vencent-lu</groupId>
   <artifactId>giants-analyse</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <packaging>jar</packaging>
   
   <name>giants-analyse</name>
@@ -110,12 +110,12 @@
 	<dependency>
 	  <groupId>${project.groupId}</groupId>
 	  <artifactId>giants-common</artifactId>
-	  <version>1.0.3</version>
+	  <version>1.0.4</version>
 	</dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>giants-web</artifactId>
-	  <version>1.0.3</version>
+	  <version>1.0.5</version>
     </dependency>
 	<dependency>
       <groupId>commons-lang</groupId>
