@@ -37,7 +37,8 @@ import com.giants.web.filter.AbstractFilter;
  *
  */
 public class ExecutionTimeProfilerFilter extends AbstractFilter {
-	private int threshold = 500;
+    private boolean logCallStackTimeAnalyse = false;
+    private int threshold = 500;
 
     public ExecutionTimeProfilerFilter() {
     }
@@ -86,14 +87,15 @@ public class ExecutionTimeProfilerFilter extends AbstractFilter {
      */
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        // 开始处理request, 并计时.
         String requestString = dumpRequest(request);
+        if (this.logCallStackTimeAnalyse) {
+            // 开始处理request, 并计时.
+            if (log.isInfoEnabled()) {
+                log.info("Started processing request: " + requestString);
+            }
 
-        if (log.isInfoEnabled()) {
-            log.info("Started processing request: " + requestString);
+            ExecutionTimeProfiler.start("process HTTP request");
         }
-
-        ExecutionTimeProfiler.start("process HTTP request");
 
         Throwable failed = null;
 
@@ -102,28 +104,30 @@ public class ExecutionTimeProfilerFilter extends AbstractFilter {
         } catch (Throwable e) {
             failed = e;
         } finally {
-        	ExecutionTimeProfiler.release();
+            if (this.logCallStackTimeAnalyse) {
+                ExecutionTimeProfiler.release();
 
-            long duration = ExecutionTimeProfiler.getDuration();
+                long duration = ExecutionTimeProfiler.getDuration();
 
-			if (failed != null) {
-				log.error(MessageFormat.format(
-						"Response of {0} failed in {1,number}ms: {2}\n{3}\n",
-						new Object[] { requestString, new Long(duration),
-								failed.getLocalizedMessage(), getDetail() }));
-			} else if (duration > threshold) {
-				log.warn(MessageFormat.format(
-						"Response of {0} returned in {1,number}ms\n{2}\n",
-						new Object[] { requestString, new Long(duration),
-								getDetail() }));
-			} else {
-				log.info(MessageFormat.format(
-						"Response of {0} returned in {1,number}ms\n{2}\n",
-						new Object[] { requestString, new Long(duration),
-								getDetail() }));
-			}
+                if (failed != null) {
+                    log.error(MessageFormat.format(
+                            "Response of {0} failed in {1,number}ms: {2}\n{3}\n",
+                            new Object[] { requestString, new Long(duration),
+                                    failed.getLocalizedMessage(), getDetail() }));
+                } else if (duration > threshold) {
+                    log.warn(MessageFormat.format(
+                            "Response of {0} returned in {1,number}ms\n{2}\n",
+                            new Object[] { requestString, new Long(duration),
+                                    getDetail() }));
+                } else {
+                    log.info(MessageFormat.format(
+                            "Response of {0} returned in {1,number}ms\n{2}\n",
+                            new Object[] { requestString, new Long(duration),
+                                    getDetail() }));
+                }
 
-            ExecutionTimeProfiler.reset();
+                ExecutionTimeProfiler.reset();
+            }
         }
 
         if (failed != null) {
@@ -142,6 +146,15 @@ public class ExecutionTimeProfilerFilter extends AbstractFilter {
     private String getDetail() {
         return ExecutionTimeProfiler.dump("Detail: ", "        ");
     }
+
+    public boolean isLogCallStackTimeAnalyse() {
+        return logCallStackTimeAnalyse;
+    }
+
+    public void setLogCallStackTimeAnalyse(boolean logCallStackTimeAnalyse) {
+        this.logCallStackTimeAnalyse = logCallStackTimeAnalyse;
+    }
+
     /**
      * @return the threshold
      */
