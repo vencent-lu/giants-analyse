@@ -43,7 +43,8 @@ public class ExecutionTimeProfilerFilter extends AbstractFilter {
     public ExecutionTimeProfilerFilter() {
     }
 
-    public ExecutionTimeProfilerFilter(int threshold) {
+    public ExecutionTimeProfilerFilter(boolean logCallStackTimeAnalyse, int threshold) {
+        this.logCallStackTimeAnalyse = logCallStackTimeAnalyse;
         this.threshold = threshold;
     }
 

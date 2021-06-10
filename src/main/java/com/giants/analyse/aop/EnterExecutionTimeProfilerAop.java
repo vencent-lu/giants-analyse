@@ -17,12 +17,13 @@ import com.giants.common.lang.reflect.ReflectUtils;
 public class EnterExecutionTimeProfilerAop {
 	
 	protected final Logger loger = LoggerFactory.getLogger(this.getClass());
-	
+
+	private boolean logCallStackTimeAnalyse = false;
 	private int threshold = 500;
 	private boolean showArguments = false;
 	
 	public Object timerProfiler(ProceedingJoinPoint service) throws Throwable{	
-		if (ExecutionTimeProfiler.getEntry()!=null) {
+		if (!this.logCallStackTimeAnalyse || ExecutionTimeProfiler.getEntry()!=null) {
 			return this.enter(service);
 		} else {
 			return this.start(service);
@@ -132,4 +133,11 @@ public class EnterExecutionTimeProfilerAop {
 		this.threshold = threshold;
 	}
 
+	public boolean isLogCallStackTimeAnalyse() {
+		return logCallStackTimeAnalyse;
+	}
+
+	public void setLogCallStackTimeAnalyse(boolean logCallStackTimeAnalyse) {
+		this.logCallStackTimeAnalyse = logCallStackTimeAnalyse;
+	}
 }
