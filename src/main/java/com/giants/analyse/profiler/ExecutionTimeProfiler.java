@@ -177,9 +177,6 @@ public final class ExecutionTimeProfiler {
                                                     : firstEntry.startTime;
         }
 
-        /**
-         * 取得entry的信息。
-         */
         public String getMessage() {
             String messageString = null;
 

@@ -30,23 +30,6 @@ import com.giants.web.filter.AbstractFilter;
 /**
  * 记录servlet处理时间的filter。
  * <p>
- * <code>web.xml</code>配置文件格式如下：
- * 
- * <pre>
- * &lt;![CDATA[
- *  &lt;filter&gt;
- *  &lt;filter-name&gt;timer&lt;/filter-name&gt;
- *  &lt;filter-class&gt;com.alibaba.webx.filter.timer.TimerFilter&lt;/filter-class&gt;
- *  &lt;init-param&gt;
- *  &lt;param-name&gt;threshold&lt;/param-name&gt;
- *  &lt;param-value&gt;30000&lt;/param-value&gt;
- *  &lt;/init-param&gt;
- *  &lt;/filter&gt;
- *  ]]&gt;
- * </pre>
- * 
- * </p>
- * <p>
  * 其中<code>threshold</code>参数表明超时阈值，如果servlet处理的总时间超过该值，则filter会以warning的方式记录该次操作。
  * </p>
  * 
@@ -54,7 +37,14 @@ import com.giants.web.filter.AbstractFilter;
  *
  */
 public class ExecutionTimeProfilerFilter extends AbstractFilter {
-	private int threshold;
+	private int threshold = 500;
+
+    public ExecutionTimeProfilerFilter() {
+    }
+
+    public ExecutionTimeProfilerFilter(int threshold) {
+        this.threshold = threshold;
+    }
 
     /**
      * 初始化filter, 设置监视参数.
@@ -62,35 +52,27 @@ public class ExecutionTimeProfilerFilter extends AbstractFilter {
      * @throws ServletException 初始化失败
      */
 	public void init() throws ServletException {
-		String thresholdString = "30000";
-		String thresholdPropertiesPath = this.findInitParameter(
-				"thresholdPropertiesPath", "classpath*:/threshold.properties");
-		try {
-			Properties prop = new Properties();
-			/**
-			 * 需要改进，参照Spring实现
-			 */
-			prop.load(this.getClass().getClassLoader().getResourceAsStream(thresholdPropertiesPath.split(":")[1]));
-			thresholdString = prop.getProperty("profiler.executionTime.threshold");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		try {
-			threshold = Integer.parseInt(thresholdString);
-		} catch (NumberFormatException e) {
-			threshold = 0;
+		String thresholdPropertiesPath = this.findInitParameter("thresholdPropertiesPath", null);
+		if (thresholdPropertiesPath != null) {
+			try {
+				Properties prop = new Properties();
+				prop.load(this.getClass().getClassLoader().getResourceAsStream(thresholdPropertiesPath));
+				String thresholdString = prop.getProperty("profiler.executionTime.threshold");
+				threshold = Integer.parseInt(thresholdString);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 
 		if (threshold < 0) {
 			throw new ServletException(MessageFormat.format(
 					"Invalid init parameter for filter: threshold = {0}",
-					new Object[] { thresholdString }));
+					new Object[] { threshold }));
 		}
 
 		log.info(MessageFormat.format(
 				"Timer filter started with threshold {0,number}ms",
-				new Object[] { new Integer(threshold) }));
+				new Object[] { threshold }));
 	}
 
     /**
