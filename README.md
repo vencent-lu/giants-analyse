@@ -37,8 +37,8 @@ httpRequest 时间统计过滤器，参数说明如下：
 ```
 2021-11-01 17:36:44.770  INFO - [TID: N/A] - 21 --- [nio-9001-exec-8] c.g.a.f.ExecutionTimeProfilerFilter      : Response of POST /systemModule/search returned in 63ms
 Detail: 0 [63ms (1ms), 100%] - process HTTP request
-        +---0 [22ms, 35%, 35%] - com.meikuangrm.auth.authority.api.AuthorityService.loadLoginEmployee
-        `---22 [40ms, 63%, 63%] - com.meikuangrm.auth.gateway.conf.controller.SystemModuleController.search
-            +---22 [19ms, 48%, 30%] - com.meikuangrm.auth.authority.api.AuthorityService.checkControllerAuthority
-            `---41 [21ms, 52%, 33%] - com.meikuangrm.auth.conf.api.SystemModuleService.searchSystemModules
+        +---0 [22ms, 35%, 35%] - com.giants.auth.authority.api.AuthorityService.loadLoginEmployee
+        `---22 [40ms, 63%, 63%] - com.giants.auth.gateway.conf.controller.SystemModuleController.search
+            +---22 [19ms, 48%, 30%] - com.giants.auth.authority.api.AuthorityService.checkControllerAuthority
+            `---41 [21ms, 52%, 33%] - com.giants.auth.conf.api.SystemModuleService.searchSystemModules
 ```
