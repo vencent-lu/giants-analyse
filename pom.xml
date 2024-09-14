@@ -4,7 +4,7 @@
   
   <groupId>com.github.vencent-lu</groupId>
   <artifactId>giants-analyse</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
   <packaging>jar</packaging>
   
   <name>giants-analyse</name>
@@ -110,22 +110,12 @@
 	<dependency>
 	  <groupId>${project.groupId}</groupId>
 	  <artifactId>giants-common</artifactId>
-	  <version>1.1.0</version>
+	  <version>1.3.0</version>
 	</dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>giants-web</artifactId>
-	  <version>1.1.7</version>
-    </dependency>
-	<dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-	  <version>2.6</version>
-    </dependency>
-	<dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-	  <version>1.7.21</version>
+	  <version>1.1.10</version>
     </dependency>
 	<dependency>
       <groupId>org.aspectj</groupId>
