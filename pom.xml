@@ -4,7 +4,7 @@
   
   <groupId>com.github.vencent-lu</groupId>
   <artifactId>giants-analyse</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.8</version>
   <packaging>jar</packaging>
   
   <name>giants-analyse</name>
@@ -115,7 +115,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>giants-web</artifactId>
-	  <version>1.1.10</version>
+	  <version>1.1.11</version>
     </dependency>
 	<dependency>
       <groupId>org.aspectj</groupId>
